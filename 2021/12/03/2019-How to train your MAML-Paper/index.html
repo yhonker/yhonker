@@ -161,7 +161,8 @@ MathJax = {
 <p><strong>二. idea：</strong></p>
 <p><strong>1. 梯度不稳定性→多步损失优化(MSL)</strong></p>
 <p>MAML是在完成对支持集的内部循环更新后，将基网络计算出的集损失最小化。本文提出在内部循环的每一步都考虑测试集的损失最小化，也就是说一个任务的经验风险是每步support set loss更新后query set loss的加权总和：</p>
-<p>$$<br>\theta=\theta-\beta \nabla_{\theta} \sum_{b=1}^{B} \sum_{i=0}^{N} v_{i} \mathcal{L}<em>{T</em>{b}}\left(f_{\theta_{i}^{b}}\right)<br>$$<br>每一步的基网权值既可以直接(对于当前步的loss)和间接(来自后续步的loss)接收梯度。原始方法中基于反向传播，除了最后一步，每一步的基础网络权值都被隐式地优化，导致许多不稳定性问题，使用多步骤丢失可以缓解这个问题。此外采用退火加权每步损失（i越大，vi越大）。</p>
+<p>$$<br>\theta=\theta-\beta \nabla_{\theta} \sum_{b=1}^{B} \sum_{i=0}^{N} v_{i} \mathcal{L}<em>{T</em>{b}}\left(f_{\theta_{i}^{b}}\right)<br>$$</p>
+<p>每一步的基网权值既可以直接(对于当前步的loss)和间接(来自后续步的loss)接收梯度。原始方法中基于反向传播，除了最后一步，每一步的基础网络权值都被隐式地优化，导致许多不稳定性问题，使用多步骤丢失可以缓解这个问题。此外采用退火加权每步损失（i越大，vi越大）。</p>
 <p><strong>疑问：基网络输入的数据格式？</strong></p>
 <p><strong>2. 二阶导数成本→导数退火DA</strong></p>
 <p>MAML在整个训练阶段都采用了一阶近似，我们随着训练的进行对微分阶数进行退火。如在训练阶段的前50个epochs使用一阶梯度，然后在训练阶段的其余时间使用二阶梯度。</p>
@@ -180,7 +181,7 @@ MathJax = {
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2021/12/03/hello/" target="_self">
+              <a href="/2021/12/03/hello-world/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
