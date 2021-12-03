@@ -100,54 +100,130 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="">
-        <div class="time-m-d">2021-12-03</div>
-        <div class="title">
-          <a href="/2021/12/03/2019-How%20to%20train%20your%20MAML-Paper/">
-            
-              <span>untitled</span>
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title"></div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2021-12-03 14:15:06
+        </span>
+        
       </div>
-    
-      <div class="post-item" title="Hello">
-        <div class="time-m-d">2021-12-03</div>
-        <div class="title">
-          <a href="/2021/12/03/hello/">
-            
-              
-                <span>Hello</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <h1 id="2019-How-to-train-your-MAML-Paper"><a href="#2019-How-to-train-your-MAML-Paper" class="headerlink" title="2019-How to train your MAML-Paper"></a>2019-How to train your MAML-Paper</h1><hr>
+<h2 id="title-How-to-train-your-MAML-Paper"><a href="#title-How-to-train-your-MAML-Paper" class="headerlink" title="title: How to train your MAML-Paper"></a>title: How to train your MAML-Paper</h2><p><strong>一. 动机：</strong></p>
+<p>MAML is simple, elegant and very powerful, however, it has a variety of issues.</p>
+<p><strong>二. 问题：</strong></p>
+<p><strong>本文提出MAML的六个问题：</strong></p>
+<p><strong>1. Training Instability（训练的不稳定性）</strong></p>
+<p>通过由同一网络组成的未展开的内环多次反向梯度下降来优化外环，这本身就可能导致梯度问题。然而，模型架构进一步加剧了梯度问题，该架构是一个标准的4层卷积网络，没有<strong>skip-connections</strong>。缺少<strong>skip-connections</strong>意味着每个梯度必须多次通过每个卷积层；实际上，梯度将被同一组参数乘以多次。在多次反向传播过程之后，展开网络的<strong>大深度结构</strong>和缺少<strong>skip-connections</strong>会分别导致梯度爆炸和梯度减小问题。</p>
+<p><strong>2. Second Order Derivative Cost（二阶求导成本）</strong></p>
+<p>通过梯度更新步骤进行优化需要计算二阶梯度，计算成本非常高。MAML的作者建议使用一阶近似将过程加快三倍，但是使用这些近似会对最终的泛化误差产生负面影响。</p>
+<p><strong>3. Absence of Batch Normalization Statistic Accumulation（缺少批处理归一化统计量的积累）</strong></p>
+<p>在MAML中，使用当前批的统计信息进行批处理。这当然没有什么效率可言，因为不同的batch的平均值和方差也都不一样，学习到的偏差需要不断去适应不同的平均值与方差。这样反而不如使用累计的运行统计信息，它最终将收敛到某对全局的平均值和方差上。</p>
+<p><strong>4. Shared (across step) Batch Normalization Bias（共享的批规范化偏差）</strong></p>
+<p>批处理规范化偏差在内部循环中没有更新；相反，在基础模型的所有迭代中使用相同的偏差。这样做隐含地假设所有基本模型在整个内部循环更新中都是相同的，因此具有相同的通过它们的特性分布。这是一个错误的假设，因为在每次内部循环更新时，都会实例化一个新的基础模型，该模型与前一个模型有很大的不同，从偏差估计的角度来看，它被视为一个新模型。因此，为基础模型的所有迭代学习一组偏差可能会限制性能。</p>
+<p><strong>5. Shared Inner Loop (across step and across parameter) Learning Rate（共享的内循环学习率）</strong></p>
+<p>影响泛化和收敛速度（就训练迭代而言）的一个问题是，用于所有参数和所有更新步骤的共享学习率。这样做会带来两个主要问题。拥有固定的学习率需要进行多个超参数搜索，以找到特定数据集的正确学习率；这一过程的计算成本可能非常高，具体取决于搜索的方式。</p>
+<p><strong>6. Fixed Outer Loop Learning Rate（固定的外循环学习率）</strong></p>
+<p>在MAML中，作者使用具有固定学习率的Adam来优化元目标。使用阶跃函数或余弦函数对学习速率进行退火对于在多种环境下实现最先进的泛化性能至关重要（Loshchilov&amp;Hutter，2016；He等人，2016；Larsson等人，2016；Huang等人，2017）。因此，我们推断，使用静态学习速率会降低MAML的泛化性能，也可能是优化速度较慢的原因。此外，拥有固定的学习速率可能意味着需要花费更多的（计算）时间来调整学习速率。</p>
+<p><strong>二. idea：</strong></p>
+<p><strong>1. 梯度不稳定性→多步损失优化(MSL)</strong></p>
+<p>MAML是在完成对支持集的内部循环更新后，将基网络计算出的集损失最小化。本文提出在内部循环的每一步都考虑测试集的损失最小化，也就是说一个任务的经验风险是每步support set loss更新后query set loss的加权总和：</p>
+<p>$$<br>\theta=\theta-\beta \nabla_{\theta} \sum_{b=1}^{B} \sum_{i=0}^{N} v_{i} \mathcal{L}<em>{T</em>{b}}\left(f_{\theta_{i}^{b}}\right)<br>$$<br>每一步的基网权值既可以直接(对于当前步的loss)和间接(来自后续步的loss)接收梯度。原始方法中基于反向传播，除了最后一步，每一步的基础网络权值都被隐式地优化，导致许多不稳定性问题，使用多步骤丢失可以缓解这个问题。此外采用退火加权每步损失（i越大，vi越大）。</p>
+<p><strong>疑问：基网络输入的数据格式？</strong></p>
+<p><strong>2. 二阶导数成本→导数退火DA</strong></p>
+<p>MAML在整个训练阶段都采用了一阶近似，我们随着训练的进行对微分阶数进行退火。如在训练阶段的前50个epochs使用一阶梯度，然后在训练阶段的其余时间使用二阶梯度。</p>
+<p><strong>3. 缺少Batch Normalization 统计信息积累→Per-Step Batch Normalization运行统计信息（BNRS）</strong></p>
+<p>更好的替代方法是按步骤收集统计信息。要按步骤收集运行统计信息，需要实例化网络中每个批正则化层的N组运行平均值和运行标准偏差集（其中N是inner loop更新步骤的总数），并使用优化过程中采取的步骤分别更新running统计信息。per-step batch normalization方法应加快MAML的优化速度，同时潜在地提高泛化性能。</p>
+<p><strong>4. 共享（跨步骤）Batch Normalization偏差→Per-Step Batch Normalization权重和偏差（BNWB）</strong></p>
+<p>Meta-SGD方法证明了学习基础网络中每个参数的学习率和梯度方向可以提高系统的泛化性能，但参数数量、计算开销将增加。因此，本文改为学习网络中每一层的学习率和方向，以及随着基础网络的逐步适应而学习不同的学习率。学习每层而不是每个参数的学习率和方向应该减少所需的内存和计算，同时在更新步骤中提供更多的灵活性。</p>
+<p><strong>5. 共享的inner loop学习率（跨步和跨参数）→学习每层每步学习率和梯度方向（LSLR）</strong><br>Meta-SGD方法证明了学习基础网络中每个参数的学习率和梯度方向可以提高系统的泛化性能，但参数数量、计算开销将增加。因此，本文改为学习网络中每一层的学习率和方向，以及随着基础网络的逐步适应而学习不同的学习率。学习每层而不是每个参数的学习率和方向应该减少所需的内存和计算，同时在更新步骤中提供更多的灵活性。</p>
+<p><strong>6. 固定的outer loop学习率→元优化器学习率的余弦退火（CA）</strong></p>
+<p>余弦退火调度应用于元模型的优化器（即元优化器）。退火学习率可使模型更有效地拟合训练集，结果可能会产生更高的泛化性能。</p>
+<p>未知术语记录：</p>
+<p><strong>skip-connections</strong> </p>
+
       </div>
-    
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">2021-12-03</div>
-        <div class="title">
-          <a href="/2021/12/03/hello-world/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>Hello World</span>
-              
+              <a href="/2021/12/03/hello/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2021-12-03 14:15:06
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2019-How-to-train-your-MAML-Paper"><span class="toc-text">2019-How to train your MAML-Paper</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#title-How-to-train-your-MAML-Paper"><span class="toc-text">title: How to train your MAML-Paper</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-    <span class="page-num">1 / 1</span>
-    
-  </nav>
-</div>
+
 
         <div class="footer">
   <div class="social">
@@ -434,6 +510,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' +  + '&url=' + http%3A%2F%2Fexample.com%2F2021%2F12%2F03%2F2019-How%2520to%2520train%2520your%2520MAML-Paper%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2021/12/03/2019-How%20to%20train%20your%20MAML-Paper/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
