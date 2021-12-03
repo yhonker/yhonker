@@ -156,14 +156,14 @@ MathJax = {
         <h1 id="2015-UNet-Paper"><a href="#2015-UNet-Paper" class="headerlink" title="2015-UNet-Paper"></a>2015-UNet-Paper</h1><h3 id="一-模型"><a href="#一-模型" class="headerlink" title="一. 模型"></a>一. 模型</h3><p><img src="/images/2015-UNet-Paper/2015-UNet-Paper.png" alt="2015-UNet-Paper"></p>
 <h4 id="二-Ideal"><a href="#二-Ideal" class="headerlink" title="二. Ideal"></a>二. Ideal</h4><p><strong>1. Over-tile策略 + valid卷积</strong></p>
 <p>该网络没有任何完全连接的层，并且仅使用每个卷积的有效部分，即，分割图仅包含像素，对于这些像素，完整上下文在输入图像中可用。该策略允许通过重叠平铺策略对任意大的图像进行无缝分割（见图2）</p>
-<p><img src="/images2015-UNet-Paper/UNet-Fig2.png" alt="UNet-Fig2"></p>
+<p><img src="/images/2015-UNet-Paper/UNet-Fig2.png" alt="UNet-Fig2"></p>
 <p><em>图2：重叠平铺策略，用于无缝分割任意大图像（此处为EM堆栈中神经元结构的分割）。黄色区域的分割预测需要蓝色区域内的图像数据作为输入。缺少的输入数据通过镜像进行推断</em></p>
 <p><strong>2.数据增强-弹性变换</strong></p>
 <p>（1）首先需要对图像中的每个像素点(x,y)产生两个-1~1之间的随机数，Δx(x,y)和Δy(x,y)，分别表示该像素点的x方向和y方向的移动距离；</p>
 <p>（2）生成一个以0为均值，以σ为标准差的高斯核k_nn，并用前面的随机数与之做卷积，并将结果作用于原图像。</p>
 <p><strong>3. 损失函数</strong></p>
-<p><img src="/images2015-UNet-Paper/2015-UNet-Paper-1.png" alt="2015-UNet-Paper-1"></p>
-<p><img src="/images2015-UNet-Paper/2015-UNet-Paper-2.png" alt="2015-UNet-Paper-2"></p>
+<p><img src="/images/2015-UNet-Paper/2015-UNet-Paper-1.png" alt="2015-UNet-Paper-1"></p>
+<p><img src="/images/2015-UNet-Paper/2015-UNet-Paper-2.png" alt="2015-UNet-Paper-2"></p>
 <p>l(x):x像素对应得类真值</p>
 <p>关于权重函数：d1，d2分别是像素点最近和第二近的细胞的距离。wc : Ω → R is the weight map to balance the class frequencies?.根据经验w0 = 10，σ ≈ 5。</p>
 <h4 id="3-术语"><a href="#3-术语" class="headerlink" title="3. 术语"></a>3. 术语</h4><p><strong>Warping Error</strong></p>
