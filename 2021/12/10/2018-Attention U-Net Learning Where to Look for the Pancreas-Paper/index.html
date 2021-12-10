@@ -153,7 +153,7 @@ MathJax = {
           
       </div>
       <div class="markdown-body">
-        <h1 id="2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper"><a href="#2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper" class="headerlink" title="2018-Attention U-Net Learning Where to Look for the Pancreas-Paper"></a>2018-Attention U-Net Learning Where to Look for the Pancreas-Paper</h1><h3 id="1-MOTIVATION"><a href="#1-MOTIVATION" class="headerlink" title="1. MOTIVATION"></a>1. MOTIVATION</h3><p><img src="images/2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper/2015-UNet-Paper.png" alt="2015-UNet-Paper"></p>
+        <h1 id="2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper"><a href="#2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper" class="headerlink" title="2018-Attention U-Net Learning Where to Look for the Pancreas-Paper"></a>2018-Attention U-Net Learning Where to Look for the Pancreas-Paper</h1><h3 id="1-MOTIVATION"><a href="#1-MOTIVATION" class="headerlink" title="1. MOTIVATION"></a>1. MOTIVATION</h3><p><img src="/images/2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper/1.png" alt="2015-UNet-Paper"></p>
 <p>1.<strong>级联框架</strong>导致计算资源和模型参数的过度和冗余使用</p>
 <p>2.由于医学图像本身的特点（<strong>待分割的器官组织在形状和大小上变化多样</strong>）,所以这方面是医学图像要解决的难点之一</p>
 <p><strong>（级联不仅融合了ROI也融合了非ROI区域）</strong></p>
@@ -162,9 +162,9 @@ MathJax = {
 <p>一次选择一个图像的一个区域作为注意力，设成1，其他设为0。他是不能微分的，无法进行标准的反向传播，因此需要蒙特卡洛采样来计算各个反向传播阶段的精度。 考虑到精度取决于采样的完成程度，因此需要其他技术（例如强化学习）</p>
 <p><strong>Soft Attention</strong></p>
 <p>加权图像的每个像素。 高相关性区域乘以较大的权重，而低相关性区域标记为较小的权重。权重范围是（0-1）。他是可微的，可以正常进行反向传播。</p>
-<h4 id="MODEL"><a href="#MODEL" class="headerlink" title="MODEL"></a>MODEL</h4><p>![2018-Attention U-Net Learning Where to Look for the Pancreas-Paper](images/2018-Attention U-Net Learning Where to Look for the Pancreas-Paper/2018-Attention U-Net Learning Where to Look for the Pancreas-Paper.png)</p>
+<h4 id="MODEL"><a href="#MODEL" class="headerlink" title="MODEL"></a>MODEL</h4><p>![2018-Attention U-Net Learning Where to Look for the Pancreas-Paper](/images/2018-Attention-U-Net-Learning-Where-to-Look-for the-Pancreas-Paper/2.png)</p>
 <p>​                                                                                                                                            F代表 feature( channel)，H 代表 height, W 代表 width， D代表 depth</p>
-<p>![2018-Attention U-Net Learning Where to Look for the Pancreas-Paper-2](/images/2018-Attention U-Net Learning Where to Look for the Pancreas-Paper/2018-Attention U-Net Learning Where to Look for the Pancreas-Paper-2.png)</p>
+<p>![2018-Attention U-Net Learning Where to Look for the Pancreas-Paper-2](/images/2018-Attention U-Net Learning Where to Look for the Pancreas-Paper/3.png)</p>
 <p><strong>浅层细粒度特征图与深层粗粒度融合前，利用粗粒度特征图对细粒度特征图进行选通得到关注系数α，再将细粒度特征图与关注系数α逐元素相乘得到注意特征图xl，最后和粗粒度特征图融合。</strong></p>
 
       </div>
