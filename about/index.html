@@ -133,6 +133,37 @@ MathJax = {
       <div class="markdown-body">
         <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;HelloWorld!&quot;</span>);</span><br></pre></td></tr></table></figure>
 
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+</head>
+<body>
+    <div id="vue_det">
+        <h1>site : [object Object]</h1>
+    </div>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#vue_det',
+            data: {
+                site: "菜鸟教程",
+                url: "www.runoob.com",
+                alexa: "10000"
+            },
+            methods: {
+                details: function() {
+                    return  this.site + " - 学的不仅是技术，更是梦想！";
+                }
+            }
+        })
+    </script>
+</body>
+</html>
       </div>
     </div>
   
