@@ -11,7 +11,7 @@
   
   <title>
     
-      2018-UNet++:A Nested U-Net Architecture for Medical Image Segmentation 
+      2015-U-Net:Convolutional Networks for Biomedical Image Segmentation 
       
       
       |
@@ -133,11 +133,11 @@ MathJax = {
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">2018-UNet++:A Nested U-Net Architecture for Medical Image Segmentation</div>
+      <div class="post-title">2015-U-Net:Convolutional Networks for Biomedical Image Segmentation</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime" title="Update time"></i>
-          2021-12-03 19:31:54
+          2021-12-03 15:56:10
         </span>
         
               <span class="post-tags">
@@ -153,27 +153,35 @@ MathJax = {
           
       </div>
       <div class="markdown-body">
-        <h1 id="2018-UNet-Paper"><a href="#2018-UNet-Paper" class="headerlink" title="2018-UNet++-Paper"></a>2018-UNet++-Paper</h1><h3 id="motivation"><a href="#motivation" class="headerlink" title="motivation"></a>motivation</h3><p>关于U-net</p>
-<ol>
-<li>最佳的深度是在先验上未知的，需要广泛的架构搜索或不同深度模型的低效率集成来测试</li>
-<li>跳接施加了不必要的限制性融合方案，仅在编码器和解码器子网的相同比例的特征图上强制融合</li>
-</ol>
-<h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p><img src="/images/2018-UNet++-Paper/model.png" alt="model"></p>
-<h3 id="idea"><a href="#idea" class="headerlink" title="idea"></a>idea</h3><p><strong>1. 重新设计跳接（dense-net思想）</strong></p>
-<p><img src="/images/2018-UNet++-Paper/ideal-4.1.png" alt="ideal-4.1"></p>
-<p><img src="/images/2018-UNet++-Paper/ideal-4.png" alt="ideal-4"></p>
-<p><strong>2. 深度监督</strong></p>
-<p>深度监督使模型可以在两种模式下运行：1） 精确模式，其中平均所有分割分支的输出；2） 快速模式，其中最终分割图仅从一个分割分支中选择</p>
-<p>由于嵌套的跳过路径，UNet++在多个语义级别生成全分辨率特征映射，{x0，j，j∈ {1, 2, 3, 4}},我们将二进制交叉熵和骰子系数的组合作为损失函数添加到上述四个语义级别中的每一个，如下所述：</p>
-<p><img src="/images/2018-UNet++-Paper/ideal-5.png" alt="ideal-5"></p>
-<p>3.</p>
-<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4>
+        <h1 id="2015-UNet-Paper"><a href="#2015-UNet-Paper" class="headerlink" title="2015-UNet-Paper"></a>2015-UNet-Paper</h1><h3 id="一-模型"><a href="#一-模型" class="headerlink" title="一. 模型"></a>一. 模型</h3><p><img src="/images/2015-UNet-Paper/2015-UNet-Paper.png" alt="2015-UNet-Paper"></p>
+<h4 id="二-Ideal"><a href="#二-Ideal" class="headerlink" title="二. Ideal"></a>二. Ideal</h4><p><strong>1. Over-tile策略 + valid卷积</strong></p>
+<p>该网络没有任何完全连接的层，并且仅使用每个卷积的有效部分，即，分割图仅包含像素，对于这些像素，完整上下文在输入图像中可用。该策略允许通过重叠平铺策略对任意大的图像进行无缝分割（见图2）</p>
+<p><img src="/images/2015-UNet-Paper/UNet-Fig2.png" alt="UNet-Fig2"></p>
+<p><em>图2：重叠平铺策略，用于无缝分割任意大图像（此处为EM堆栈中神经元结构的分割）。黄色区域的分割预测需要蓝色区域内的图像数据作为输入。缺少的输入数据通过镜像进行推断</em></p>
+<p><strong>2.数据增强-弹性变换</strong></p>
+<p>（1）首先需要对图像中的每个像素点(x,y)产生两个-1~1之间的随机数，Δx(x,y)和Δy(x,y)，分别表示该像素点的x方向和y方向的移动距离；</p>
+<p>（2）生成一个以0为均值，以σ为标准差的高斯核k_nn，并用前面的随机数与之做卷积，并将结果作用于原图像。</p>
+<p><strong>3. 损失函数</strong></p>
+<p><img src="/images/2015-UNet-Paper/2015-UNet-Paper-1.png" alt="2015-UNet-Paper-1"></p>
+<p><img src="/images/2015-UNet-Paper/2015-UNet-Paper-2.png" alt="2015-UNet-Paper-2"></p>
+<p>l(x):x像素对应得类真值</p>
+<p>关于权重函数：d1，d2分别是像素点最近和第二近的细胞的距离。wc : Ω → R is the weight map to balance the class frequencies?.根据经验w0 = 10，σ ≈ 5。</p>
+<h4 id="3-术语"><a href="#3-术语" class="headerlink" title="3. 术语"></a>3. 术语</h4><p><strong>Warping Error</strong></p>
+<p>当大致检测出来一个目标，用Pixel error会发现误差很大，但实际上这个分割可能看着很好。在这种情况中，pixel error和rand error不是一个好的选择。</p>
+<p>warping error主要来衡量分割目标的拓扑形状效果。给定L∗L∗的pixel error，候选标注T（预测值）和参考标注L∗L∗（实际值）的warping error可以认为是L∗L∗和对于T最好的L∗L∗的汉明距离。<br>D(T||L∗)=minL⊲L∗||T−L||2<br>D(T||L∗)=minL⊲L∗||T−L||2</p>
+<p><strong>Rand Error</strong></p>
+<p>兰德指数是两个数据聚类的相似性评价方法，改造之后用来衡量分割性能，因为分割可以看作是聚成类的像素。</p>
+<p>给定一张图片S，有n个像素点，同时有两个分割X和Y（实际和预测？）</p>
+<p>a：两个分割中同属于一个聚类的像素点数量<br>b：两个分割中都不属于一个聚类的像素点数量<br>Rand指数：<br>Rand index=RI=a+bC2n<br>Rand index=RI=a+bCn2</p>
+<p>RI是用来衡量相似度的，越高越好，和误差相反，因此兰德误差如下：<br>RE=1−RI<br>RE=1−RI</p>
+<p>兰德误差作为不一致的度量，是两个分割对一对像素是否属于或者不属于同一个聚类的频率。</p>
+
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2021/12/03/2015-UNet-Paper/" target="_self">
+              <a href="/2021/12/03/back/2019-How%20to%20train%20your%20MAML-Paper/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -182,7 +190,7 @@ MathJax = {
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime" title="Update time"></i>
-              2021-12-03 19:31:54
+              2021-12-03 15:56:10
             </span>
             
                   <span class="post-tags">
@@ -199,7 +207,7 @@ MathJax = {
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2021/12/03/leetcode-LinkList/" target="_self">
+              <a href="/2021/12/03/back/2018-UNet++-Paper/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -215,7 +223,7 @@ MathJax = {
   <div class="post-catalog hidden" id="catalog">
     <div class="title">Contents</div>
     <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2018-UNet-Paper"><span class="toc-text">2018-UNet++-Paper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#motivation"><span class="toc-text">motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Model"><span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#idea"><span class="toc-text">idea</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AF%E8%AF%AD"><span class="toc-text">术语</span></a></li></ol></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2015-UNet-Paper"><span class="toc-text">2015-UNet-Paper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%A8%A1%E5%9E%8B"><span class="toc-text">一. 模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-Ideal"><span class="toc-text">二. Ideal</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9C%AF%E8%AF%AD"><span class="toc-text">3. 术语</span></a></li></ol></li></ol></li></ol></li></ol>
     </div>
   </div>
 
@@ -530,12 +538,12 @@ MathJax = {
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 2018-UNet%2B%2B%3AA%20Nested%20U-Net%20Architecture%20for%20Medical%20Image%20Segmentation + '&url=' + https%3A%2F%2Fyhonker.github.io%2F2021%2F12%2F03%2F2018-UNet%2B%2B-Paper%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 2015-U-Net%3AConvolutional%20Networks%20for%20Biomedical%20Image%20Segmentation + '&url=' + https%3A%2F%2Fyhonker.github.io%2F2021%2F12%2F03%2Fback%2F2015-UNet-Paper%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://yhonker.github.io/2021/12/03/2018-UNet++-Paper/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://yhonker.github.io/2021/12/03/back/2015-UNet-Paper/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
