@@ -11,7 +11,7 @@
   
   <title>
     
-      2018-Attention U-Net Learning Where to Look for the Pancreas-Paper 
+      archive_a: 2022/7 
       
       
       |
@@ -105,132 +105,57 @@
 
 
       <div class="flex-container">
-        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
-<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
 
-<!-- LaTex Display -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']]
-  }
-};
-</script>
+<!-- last: 按年份把文章分组，当前遍历到的年份 -->
+<!-- now: 当前遍历到的文章的发布年份 -->
 
-
-
-  
-
-  
-
-  
-
-  
-  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
-  <div class="container post-details" id="post-details">
-    <div class="post-content">
-      <div class="post-title">2018-Attention U-Net Learning Where to Look for the Pancreas-Paper</div>
-      <div class="post-attach">
-        <span class="post-pubtime">
-          <i class="iconfont icon-updatetime" title="Update time"></i>
-          2021-12-10 17:10:23
-        </span>
-        
-              <span class="post-tags">
-                <i class="iconfont icon-tags" title="Tags"></i>
-                
-                <span class="span--tag">
-                  <a href="/tags/Paper/" title="Paper">
-                    <b>#</b> Paper
-                  </a>
-                </span>
-                
-              </span>
-          
-      </div>
-      <div class="markdown-body">
-        <h1 id="2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper"><a href="#2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper" class="headerlink" title="2018-Attention U-Net Learning Where to Look for the Pancreas-Paper"></a>2018-Attention U-Net Learning Where to Look for the Pancreas-Paper</h1><h3 id="1-MOTIVATION"><a href="#1-MOTIVATION" class="headerlink" title="1. MOTIVATION"></a>1. MOTIVATION</h3><p><img src="/images/2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper/1.png" alt="2015-UNet-Paper"></p>
-<p>1.<strong>级联框架</strong>导致计算资源和模型参数的过度和冗余使用</p>
-<p>2.由于医学图像本身的特点（<strong>待分割的器官组织在形状和大小上变化多样</strong>）,所以这方面是医学图像要解决的难点之一</p>
-<p><strong>（级联不仅融合了ROI也融合了非ROI区域）</strong></p>
-<h3 id="2-IDEAS"><a href="#2-IDEAS" class="headerlink" title="2. IDEAS"></a>2. IDEAS</h3><p>注意力意力分为<strong>Hard Attention</strong>和 <strong>Soft Attention</strong></p>
-<p><strong>Hard Attention</strong></p>
-<p>一次选择一个图像的一个区域作为注意力，设成1，其他设为0。他是不能微分的，无法进行标准的反向传播，因此需要蒙特卡洛采样来计算各个反向传播阶段的精度。 考虑到精度取决于采样的完成程度，因此需要其他技术（例如强化学习）</p>
-<p><strong>Soft Attention</strong></p>
-<p>加权图像的每个像素。 高相关性区域乘以较大的权重，而低相关性区域标记为较小的权重。权重范围是（0-1）。他是可微的，可以正常进行反向传播。</p>
-<h4 id="MODEL"><a href="#MODEL" class="headerlink" title="MODEL"></a>MODEL</h4><p><img src="/images/2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper/2.png" alt="2018-Attention U-Net Learning Where to Look for the Pancreas-Paper"></p>
-<p>​                                                                                                                                            F代表 feature( channel)，H 代表 height, W 代表 width， D代表 depth</p>
-<p><img src="/images/2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper/3.png" alt="2018-Attention U-Net Learning Where to Look for the Pancreas-Paper-2"></p>
-<p><strong>浅层细粒度特征图与深层粗粒度融合前，利用粗粒度特征图对细粒度特征图进行选通得到关注系数α，再将细粒度特征图与关注系数α逐元素相乘得到注意特征图xl，最后和粗粒度特征图融合。</strong></p>
-
-      </div>
-      
-        <div class="prev-or-next">
-          <div class="post-foot-next">
-            
-              <a href="/2021/12/03/back/2018-UNet++-Paper/" target="_self">
-                <i class="iconfont icon-chevronleft"></i>
-                <span>Prev</span>
-              </a>
-            
-          </div>
-          <div class="post-attach">
-            <span class="post-pubtime">
-              <i class="iconfont icon-updatetime" title="Update time"></i>
-              2021-12-10 17:10:23
-            </span>
-            
-                  <span class="post-tags">
-                    <i class="iconfont icon-tags" title="Tags"></i>
-                    
-                    <span class="span--tag">
-                      <a href="/tags/Paper/" title="Paper">
-                        <b>#</b> Paper
-                      </a>
-                    </span>
-                    
-                  </span>
-              
-          </div>
-          <div class="post-foot-prev">
-            
-          </div>
+<div class="container archives">
+  <div class="post-list">
+    
+        <!-- 后续文章的发布年份呈现 -->
+        <div class="content-title">
+          <h2>
+            <span>2022</span>
+          </h2>
         </div>
       
-    </div>
+      <div class="post-item" title="C++ 内存管理">
+        <div class="time-m-d">07-18</div>
+        <div class="title">
+          <a href="/2022/07/18/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+            <span>C++ 内存管理</span>
+          </a>
+        </div>
+      </div>
     
-  <div id="btn-catalog" class="btn-catalog">
-    <i class="iconfont icon-catalog"></i>
-  </div>
-  <div class="post-catalog hidden" id="catalog">
-    <div class="title">Contents</div>
-    <div class="catalog-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#2018-Attention-U-Net-Learning-Where-to-Look-for-the-Pancreas-Paper"><span class="toc-text">2018-Attention U-Net Learning Where to Look for the Pancreas-Paper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MOTIVATION"><span class="toc-text">1. MOTIVATION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-IDEAS"><span class="toc-text">2. IDEAS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MODEL"><span class="toc-text">MODEL</span></a></li></ol></li></ol></li></ol></li></ol>
-    </div>
-  </div>
-
-  
-<script src="/js/catalog.js"></script>
-
-
-
-
+        <!-- 后续文章的发布年份呈现 -->
+        <div class="content-title">
+          <h2>
+            <span>2021</span>
+          </h2>
+        </div>
+      
+      <div class="post-item" title="C 调用函数修改变量问题">
+        <div class="time-m-d">12-12</div>
+        <div class="title">
+          <a href="/2021/12/12/C%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0%E4%BF%AE%E6%94%B9%E5%8F%98%E9%87%8F%E9%97%AE%E9%A2%98/">
+            <span>C 调用函数修改变量问题</span>
+          </a>
+        </div>
+      </div>
     
-      <div class="comments-container">
-        
-
-
-
-
-
+      <div class="post-item" title="设计模式概述">
+        <div class="time-m-d">12-03</div>
+        <div class="title">
+          <a href="/2021/12/03/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%A6%82%E8%BF%B0/">
+            <span>设计模式概述</span>
+          </a>
+        </div>
       </div>
     
   </div>
-
+</div>
 
         <div class="footer">
   <div class="social">
@@ -517,24 +442,6 @@ MathJax = {
 
 
         
-  
-    <div class="share-icon tools-bar-item">
-      <a href="javascript: void(0)" id="share-icon">
-        <i class="iconfont iconshare"></i>
-      </a>
-      <div class="share-content hidden">
-        
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 2018-Attention%20U-Net%20Learning%20Where%20to%20Look%20for%20the%20Pancreas-Paper + '&url=' + https%3A%2F%2Fyhonker.github.io%2F2021%2F12%2F10%2Fback%2F2018-Attention%2520U-Net%2520Learning%2520Where%2520to%2520Look%2520for%2520the%2520Pancreas-Paper%2F + '" target="_blank" title="Twitter">
-            <i class="iconfont icon-twitter"></i>
-          </a>
-        
-        
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://yhonker.github.io/2021/12/10/back/2018-Attention%20U-Net%20Learning%20Where%20to%20Look%20for%20the%20Pancreas-Paper/" target="_blank" title="Facebook">
-            <i class="iconfont icon-facebooksquare"></i>
-          </a>
-        
-      </div>
-    </div>
   
   
 <script src="/js/shares.js"></script>
